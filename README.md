@@ -30,7 +30,7 @@ npm run seed                 # seeds MongoDB when MONGODB_URI is configured
 npm run dev                  # API: http://localhost:4000, UI: http://localhost:5173
 ```
 
-The app works without MongoDB or an AI key using deterministic demo fallback data. To use MongoDB, start a local instance and set `MONGODB_URI` in `.env` before running `npm run seed`.
+The app works without MongoDB or an AI key using deterministic demo fallback data. To enable the free AI path, create an OpenRouter key at [openrouter.ai/settings/keys](https://openrouter.ai/settings/keys), put it in `OPENROUTER_API_KEY`, and keep `AI_MODEL=openrouter/free`. OpenRouter’s free router is OpenAI-compatible and may enforce provider/account rate limits; the app falls back safely if the provider is unavailable. To use MongoDB, start a local instance and set `MONGODB_URI` in `.env` before running `npm run seed`.
 
 Useful commands:
 
@@ -83,7 +83,7 @@ curl -X POST http://localhost:4000/api/availability \
 | Availability | Mock inventory service | Never hallucinate inventory or promise a room |
 | Unsupported questions | Grounded fallback | Avoids inventing hotel policy |
 
-If `AI_API_URL` and `AI_API_KEY` are configured, the server calls an OpenAI-compatible chat endpoint with a short grounded prompt. If the call times out, returns a non-2xx response, or produces unusable output, the service returns a deterministic response from the retrieved facts.
+By default, the server calls OpenRouter’s free `openrouter/free` model router with a short grounded prompt. You can use another OpenAI-compatible provider by changing `AI_API_URL`, `AI_MODEL`, and the server-side key. If the call times out, returns a non-2xx response, or produces unusable output, the service returns a deterministic response from the retrieved facts.
 
 ## Security choices
 
