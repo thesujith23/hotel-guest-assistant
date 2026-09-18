@@ -3,6 +3,8 @@ import { generateGroundedAnswer } from './aiService.js';
 import { validateDates } from './validation.js';
 export async function answerChat({ question, history = [], availability }) {
   const q = question.toLowerCase();
+  const greeting = /^(hi|hello|hey|good morning|good afternoon|good evening|how are you|thanks|thank you)\b/.test(q.trim());
+  if (greeting) return { intent: 'greeting', answer: 'Hello and welcome to Harborlight Hotel. I can help with check-in, amenities, breakfast, cancellation, room suitability, or availability. What would you like to know?', grounded: true, needsClarification: false, availability: null, sources: ['hotel.welcome'] };
   const availabilityIntent = /availability|available|vacancy|room.*(date|night)|stay/.test(q);
   if (availabilityIntent) {
     if (!availability) return { intent: 'clarification', answer: 'I can check that. Please provide your check-in date, check-out date, and number of guests.', grounded: true, needsClarification: true, availability: null, sources: [] };
