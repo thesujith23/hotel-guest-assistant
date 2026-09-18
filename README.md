@@ -105,13 +105,13 @@ Before production, add an API gateway/WAF, bot protection, distributed Redis rat
 
 ## Evaluation scenarios
 
-The backend suite covers eight meaningful flows: healthy service, normal FAQ, unsupported question fallback, missing availability fields, valid availability, invalid dates, availability through chat, and malformed request validation. The frontend suite covers the initial accessible chat and availability controls.
+The backend suite covers healthy service, normal FAQ, greetings, unsupported-question fallback, missing availability fields, natural-language availability wording, valid availability, invalid dates, availability through chat, and malformed request validation. The frontend suite covers the initial accessible chat and the in-chat availability prompt.
 
 Manual scenarios to demonstrate in an interview:
 
 1. Ask “What time is check-in?” and show the grounded response.
 2. Ask “Does the hotel have a swimming pool?” and show amenity data.
-3. Ask “Which room is suitable for three guests?” and show compatible rooms.
+3. Ask “Which room is suitable for three guests?” and show the in-chat availability form with compatible rooms after dates are submitted.
 4. Ask for availability without dates and show clarification.
 5. Submit checkout before check-in and show validation.
 6. Submit 10–12 October 2026 for three guests and show two room types.
@@ -134,4 +134,4 @@ Manual scenarios to demonstrate in an interview:
 
 ## AI tools used
 
-AI assistance was used during development for planning, code drafting, test design, and documentation. All generated code was manually reviewed and verified with automated tests and local integration checks. The optional runtime LLM is disabled unless explicitly configured by the operator.
+AI assistance was used during development through Manus for planning, code drafting, test design, UI iteration, security review, and documentation. OpenRouter is the optional runtime LLM provider through the `openrouter/free` model router. All generated code was manually reviewed and verified with automated tests and local integration checks. The runtime LLM is enabled only when the operator provides `OPENROUTER_API_KEY`.
