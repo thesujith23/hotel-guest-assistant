@@ -13,5 +13,5 @@ export async function answerChat({ question, history = [], availability }) {
     return { intent: 'availability', answer: rooms.length ? `I found ${rooms.length} suitable room type${rooms.length === 1 ? '' : 's'} for your dates.` : 'I couldn’t find a matching room for those dates and guest count.', grounded: true, needsClarification: false, availabilityRequest: true, availability: { ...availability, rooms }, sources: ['inventory.mock'] };
   }
   const facts = await findFacts(question); const result = await generateGroundedAnswer({ question, facts, history });
-  return { intent: facts.length ? 'knowledge' : 'unsupported', answer: result.answer, grounded: result.grounded, needsClarification: !facts.length, availability: null, sources: facts.map(f => `${f.category}.${f.key}`) };
+  return { intent: facts.length ? 'knowledge' : result.usedModel ? 'general' : 'unsupported', answer: result.answer, grounded: result.grounded, usedModel: result.usedModel, aiStatus: result.aiStatus, needsClarification: !facts.length && !result.usedModel, availability: null, sources: facts.map(f => `${f.category}.${f.key}`) };
 }
