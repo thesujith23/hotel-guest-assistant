@@ -1,0 +1,2 @@
+import { render, screen } from '@testing-library/react'; import { describe, expect, test } from 'vitest'; import App from '../App.jsx';
+describe('guest assistant UI', () => { test('renders welcome message and question input', () => { render(<App />); expect(screen.getByText(/Welcome to Harborlight Hotel/i)).toBeInTheDocument(); expect(screen.getByLabelText(/Ask a hotel question/i)).toBeInTheDocument(); expect(screen.getByRole('button', { name: /Find rooms/i })).toBeInTheDocument(); }); });
