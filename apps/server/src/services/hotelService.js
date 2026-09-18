@@ -10,8 +10,8 @@ export async function findRoomsForGuests(adults) {
 }
 export async function checkAvailability({ checkIn, checkOut, adults }) {
   const rooms = await findRoomsForGuests(adults);
-  let codes = demoInventory[`${checkIn}:${checkOut}`];
-  if (Inventory.db.readyState === 1) { const row = await Inventory.findOne({ checkIn, checkOut }).lean(); if (row) codes = row.availableCodes; }
-  if (!codes) codes = rooms.map(r => r.code);
-  return rooms.filter(r => codes.includes(r.code));
+  let inventory = demoInventory[`${checkIn}:${checkOut}`];
+  if (Inventory.db.readyState === 1) { const row = await Inventory.findOne({ checkIn, checkOut }).lean(); if (row) inventory = row.availableCodes; }
+  if (!inventory) return rooms.map(r => ({ ...r, availableCount: r.totalRooms || Math.floor(Math.random() * 6) + 2 }));
+  return rooms.filter(r => inventory[r.code] > 0).map(r => ({ ...r, availableCount: inventory[r.code] }));
 }

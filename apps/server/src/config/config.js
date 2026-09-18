@@ -35,8 +35,14 @@ export const demoFacts = [
   { category: 'service', key: 'transport', questionVariants: ['airport', 'taxi', 'transport', 'transfer'], answer: 'Reception can help arrange local transport, but airport-transfer pricing and availability are not connected to this demo.', tags: ['airport', 'taxi', 'transport', 'transfer', 'shuttle'], sourceLabel: 'Guest services' }
 ];
 export const demoRooms = [
-  { code: 'harbor-king', name: 'Harbor King Room', capacity: 2, beds: '1 king bed', accessible: true, rate: 189 },
-  { code: 'family-suite', name: 'Family Harbor Suite', capacity: 4, beds: '1 king bed and 1 sofa bed', accessible: true, rate: 279 },
-  { code: 'twin-deluxe', name: 'Deluxe Twin Room', capacity: 3, beds: '2 twin beds and 1 rollaway', accessible: false, rate: 229 }
+  { code: 'harbor-king', name: 'Harbor King Room', capacity: 2, beds: '1 king bed', accessible: true, rate: 189, totalRooms: 12 },
+  { code: 'family-suite', name: 'Family Harbor Suite', capacity: 4, beds: '1 king bed and 1 sofa bed', accessible: true, rate: 279, totalRooms: 6 },
+  { code: 'twin-deluxe', name: 'Deluxe Twin Room', capacity: 3, beds: '2 twin beds and 1 rollaway', accessible: false, rate: 229, totalRooms: 8 }
 ];
-export const demoInventory = { '2026-10-10:2026-10-12': ['family-suite', 'twin-deluxe'], '2026-12-24:2026-12-27': [] };
+export const demoInventory = {
+  '2026-10-10:2026-10-12': { 'family-suite': 2, 'twin-deluxe': 4 },
+  '2026-10-15:2026-10-18': { 'harbor-king': 5, 'family-suite': 3, 'twin-deluxe': 6 },
+  '2026-11-01:2026-11-03': { 'harbor-king': 8, 'twin-deluxe': 3 },
+  '2026-11-20:2026-11-25': { 'harbor-king': 2, 'family-suite': 1, 'twin-deluxe': 1 },
+  '2026-12-24:2026-12-27': {}
+};
