@@ -23,7 +23,12 @@ export default function App() {
   function guestCountFromText(text) { const match = text.toLowerCase().match(/\b(\d+)\s*(?:adult|guest|people|person|travell?er|occupant)/); if (match) return Math.min(12, Math.max(1, Number(match[1]))); const words = { one: 1, two: 2, three: 3, four: 4, five: 5, six: 6 }; const word = text.toLowerCase().match(/\b(one|two|three|four|five|six)\s+(?:adult|guest|people|person)/); return word ? words[word[1]] : null; }
   async function ask(text = question) {
     const value = text.trim(); if (!value || loading) return;
-    setQuestion(''); setError(''); setMessages(prev => [...prev, { role: 'user', content: value }]); setLoading(true);
+    setQuestion(''); setError(''); setMessages(prev => [...prev, { role: 'user', content: value }]);
+    if (selectedRoom && /^(yes|yeah|yep|sure|okay|ok|proceed|confirm|continue|book|go ahead)\b|\b(proceed|confirm|continue|book)\b.*\b(room|reservation|booking)\b/i.test(value)) {
+      addAssistant(`Your demo selection is confirmed: ${selectedRoom.name} at $${selectedRoom.rate} per night. No real reservation has been created. In production, this step would securely hand off to the hotel booking system.`);
+      return;
+    }
+    setLoading(true);
     try { const data = await sendChat({ question: value, history: messages.slice(-10) }); const inferredAdults = guestCountFromText(value); if (inferredAdults) setForm(prev => ({ ...prev, adults: inferredAdults })); addAssistant(data.answer, { sources: data.sources, showAvailabilityForm: data.availabilityRequest }); if (data.availability) setAvailability(data.availability); }
     catch (e) { setError(e.message); } finally { setLoading(false); }
   }
