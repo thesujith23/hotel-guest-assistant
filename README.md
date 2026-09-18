@@ -19,6 +19,8 @@ See [ARCHITECTURE.md](./ARCHITECTURE.md) for the data-flow diagram.
 
 See [SECURITY.md](./SECURITY.md) for the JWT decision, rate-limiting model, validation/sanitization boundaries, AI-specific threats, and production hardening plan.
 
+See [PRODUCT_THINKING.md](./PRODUCT_THINKING.md) for the customer problem, guest journey, UX rationale, AI boundaries, failure handling, measurement plan, and production improvements.
+
 ## Run locally
 
 Requirements: Node.js 18+, npm, and optionally MongoDB 6+.
