@@ -20,10 +20,11 @@ export default function App() {
   useEffect(() => { const list = messagesRef.current; if (list) requestAnimationFrame(() => { list.scrollTop = list.scrollHeight; }); }, [messages, loading]);
 
   function addAssistant(content, extra = {}) { setMessages(prev => [...prev, { role: 'assistant', content, ...extra }]); }
+  function guestCountFromText(text) { const match = text.toLowerCase().match(/\b(\d+)\s*(?:adult|guest|people|person|travell?er|occupant)/); if (match) return Math.min(12, Math.max(1, Number(match[1]))); const words = { one: 1, two: 2, three: 3, four: 4, five: 5, six: 6 }; const word = text.toLowerCase().match(/\b(one|two|three|four|five|six)\s+(?:adult|guest|people|person)/); return word ? words[word[1]] : null; }
   async function ask(text = question) {
     const value = text.trim(); if (!value || loading) return;
     setQuestion(''); setError(''); setMessages(prev => [...prev, { role: 'user', content: value }]); setLoading(true);
-    try { const data = await sendChat({ question: value, history: messages.slice(-10) }); addAssistant(data.answer, { sources: data.sources, showAvailabilityForm: data.needsClarification && /availability|available|vacancy|room/.test(value.toLowerCase()) }); if (data.availability) setAvailability(data.availability); }
+    try { const data = await sendChat({ question: value, history: messages.slice(-10) }); const inferredAdults = guestCountFromText(value); if (inferredAdults) setForm(prev => ({ ...prev, adults: inferredAdults })); addAssistant(data.answer, { sources: data.sources, showAvailabilityForm: data.availabilityRequest }); if (data.availability) setAvailability(data.availability); }
     catch (e) { setError(e.message); } finally { setLoading(false); }
   }
   async function checkAvailability() {
