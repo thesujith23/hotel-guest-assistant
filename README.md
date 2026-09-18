@@ -32,7 +32,7 @@ npm run seed                 # seeds MongoDB when MONGODB_URI is configured
 npm run dev                  # API: http://localhost:4000, UI: http://localhost:5173
 ```
 
-The app works without MongoDB or an AI key using deterministic demo fallback data. To enable the free AI path, create an OpenRouter key at [openrouter.ai/settings/keys](https://openrouter.ai/settings/keys), put it in `OPENROUTER_API_KEY`, and keep `AI_MODEL=openrouter/free`. OpenRouter’s free router is OpenAI-compatible and may enforce provider/account rate limits; the app falls back safely if the provider is unavailable. To use MongoDB, start a local instance and set `MONGODB_URI` in `.env` before running `npm run seed`.
+The app works without MongoDB or an AI key using deterministic demo fallback data. To enable the fast AI path, create a Gemini API key at [Google AI Studio](https://aistudio.google.com/api-keys), put it in `GEMINI_API_KEY`, set `AI_PROVIDER=gemini`, and keep `AI_MODEL=gemini-2.5-flash`. Gemini is called only by the server. OpenRouter remains supported by setting `AI_PROVIDER=openrouter`, `OPENROUTER_API_KEY`, and `AI_MODEL=openrouter/free`. The app falls back safely if the provider is unavailable. To use MongoDB, start a local instance and set `MONGODB_URI` in `.env` before running `npm run seed`.
 
 Useful commands:
 

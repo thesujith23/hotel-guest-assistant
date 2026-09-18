@@ -7,9 +7,10 @@ export const config = {
   port: Number(process.env.PORT || 4000),
   mongoUri: process.env.MONGODB_URI || '',
   clientOrigin: process.env.CLIENT_ORIGIN || 'http://localhost:5173',
-  aiApiKey: process.env.OPENROUTER_API_KEY || process.env.AI_API_KEY || '',
+  aiProvider: process.env.AI_PROVIDER || (process.env.GEMINI_API_KEY ? 'gemini' : 'openrouter'),
+  aiApiKey: process.env.GEMINI_API_KEY || process.env.OPENROUTER_API_KEY || process.env.AI_API_KEY || '',
   aiApiUrl: process.env.AI_API_URL || 'https://openrouter.ai/api/v1/chat/completions',
-  aiModel: process.env.AI_MODEL || 'openrouter/free',
+  aiModel: process.env.AI_MODEL || (process.env.GEMINI_API_KEY ? 'gemini-2.5-flash' : 'openrouter/free'),
   aiReferer: process.env.AI_REFERER || 'http://localhost:5173',
   aiTitle: process.env.AI_TITLE || 'Harborlight Hotel Guest Assistant'
 };
