@@ -1,4 +1,8 @@
-import 'dotenv/config';
+import dotenv from 'dotenv';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
+const projectRootEnv = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../../../../.env');
+dotenv.config({ path: projectRootEnv });
 export const config = {
   port: Number(process.env.PORT || 4000),
   mongoUri: process.env.MONGODB_URI || '',
