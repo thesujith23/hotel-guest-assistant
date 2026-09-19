@@ -31,7 +31,7 @@ npm install
 npm run dev                  # API: http://localhost:4000, UI: http://localhost:5173
 ```
 
-The app works without an AI key using deterministic JSON-backed hotel data. To enable the fast AI path, create a Gemini API key at [Google AI Studio](https://aistudio.google.com/api-keys), put it in `GEMINI_API_KEY`, set `AI_PROVIDER=gemini`, and keep `AI_MODEL=gemini-2.5-flash`. Gemini is called only by the server. OpenRouter remains supported by setting `AI_PROVIDER=openrouter`, `OPENROUTER_API_KEY`, and `AI_MODEL=openrouter/free`. The app falls back safely if the provider is unavailable.
+The app works without an AI key using deterministic JSON-backed hotel data. To enable the fast AI path, create a Gemini API key at [Google AI Studio](https://aistudio.google.com/api-keys), put it in `GEMINI_API_KEY`, set `AI_PROVIDER=gemini`, and keep `AI_MODEL=gemini-3.6-flash`. Gemini is called only by the server. OpenRouter remains supported by setting `AI_PROVIDER=openrouter`, `OPENROUTER_API_KEY`, and `AI_MODEL=openrouter/free`. The app falls back safely if the provider is unavailable.
 
 Useful commands:
 
