@@ -9,7 +9,17 @@ import { answerChat } from './services/chatService.js';
 import { checkAvailability } from './services/hotelService.js';
 export const app = express();
 app.disable('x-powered-by');
-app.use(helmet()); app.use(cors({ origin: config.clientOrigin })); app.use(express.json({ limit: '20kb' }));
+app.use(helmet()); 
+app.use(cors({ 
+  origin: function(origin, callback) {
+    if (!origin) return callback(null, true);
+    const allowed = config.clientOrigin.split(',').map(o => o.trim());
+    if (allowed.includes(origin) || allowed.includes('*')) return callback(null, true);
+    if (origin.startsWith('https://hotel-guest-assistant') && origin.endsWith('.vercel.app')) return callback(null, true);
+    callback(null, false);
+  }
+})); 
+app.use(express.json({ limit: '20kb' }));
 app.use((req, res, next) => { req.requestId = crypto.randomUUID(); res.setHeader('X-Request-ID', req.requestId); next(); });
 const limiter = rateLimit({ windowMs: 60_000, limit: 60, standardHeaders: true, legacyHeaders: false }); app.use('/api/chat', limiter); app.use('/api/availability', limiter);
 app.get('/api/health', (req, res) => res.json({ status: 'ok', knowledgeBase: 'json', ai: config.aiApiKey ? 'configured' : 'fallback-only', aiProvider: config.aiProvider, aiModel: config.aiModel }));
