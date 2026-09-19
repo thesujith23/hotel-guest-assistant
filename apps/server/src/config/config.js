@@ -6,10 +6,10 @@ dotenv.config({ path: projectRootEnv });
 export const config = {
   port: Number(process.env.PORT || 4000),
   clientOrigin: process.env.CLIENT_ORIGIN || 'http://localhost:5173',
-  aiProvider: process.env.AI_PROVIDER || (process.env.GEMINI_API_KEY ? 'gemini' : 'openrouter'),
-  aiApiKey: process.env.GEMINI_API_KEY || process.env.OPENROUTER_API_KEY || process.env.AI_API_KEY || '',
+  aiProvider: process.env.AI_PROVIDER || 'openrouter',
+  aiApiKey: process.env.OPENROUTER_API_KEY || process.env.GEMINI_API_KEY || process.env.AI_API_KEY || '',
   aiApiUrl: process.env.AI_API_URL || 'https://openrouter.ai/api/v1/chat/completions',
-  aiModel: process.env.AI_MODEL || (process.env.GEMINI_API_KEY ? 'gemini-3-flash-live' : 'openrouter/free'),
+  aiModel: process.env.AI_MODEL || 'openrouter/free',
   aiReferer: process.env.AI_REFERER || 'http://localhost:5173',
   aiTitle: process.env.AI_TITLE || 'Harborlight Hotel Guest Assistant'
 };
