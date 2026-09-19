@@ -45,17 +45,17 @@ export async function generateGroundedAnswer({ question, facts, history }) {
   else if (isThanks) fallback = 'You’re welcome! Let me know if you need anything else.';
   else if (isClosing) fallback = 'Thank you for chatting with us. Have a wonderful stay!';
   if (!config.aiApiKey) return fallbackResult(fallback, facts, 'fallback_no_key');
-  const controller = new AbortController(); const timer = setTimeout(() => controller.abort(), 25000);
+  const controller = new AbortController(); const timer = setTimeout(() => controller.abort(), 60000);
   try {
     const trustedFacts = facts.length ? facts.map(f => f.answer).join('\n') : 'No matching hotel fact was found.';
     let url = config.aiApiUrl; let body; const headers = { 'Content-Type': 'application/json' };
     const context = history.slice(-8).map(item => ({ role: item.role, content: String(item.content).slice(0, 1200) }));
     if (config.aiProvider === 'gemini') {
       url = geminiUrl();
-      body = JSON.stringify({ systemInstruction: { parts: [{ text: systemInstruction }] }, contents: [...context.map(item => ({ role: item.role === 'assistant' ? 'model' : 'user', parts: [{ text: item.content }] })), { role: 'user', parts: [{ text: `Trusted hotel facts:\n${trustedFacts}\n\nGuest question:\n${question}` }] }], generationConfig: { temperature: 0.25, maxOutputTokens: 280 } });
+      body = JSON.stringify({ systemInstruction: { parts: [{ text: systemInstruction }] }, contents: [...context.map(item => ({ role: item.role === 'assistant' ? 'model' : 'user', parts: [{ text: item.content }] })), { role: 'user', parts: [{ text: `Trusted hotel facts:\n${trustedFacts}\n\nGuest question:\n${question}` }] }], generationConfig: { temperature: 0.25, maxOutputTokens: 1500 } });
     } else {
       headers.Authorization = `Bearer ${config.aiApiKey}`; headers['HTTP-Referer'] = config.aiReferer; headers['X-OpenRouter-Title'] = config.aiTitle;
-      body = JSON.stringify({ model: config.aiModel, messages: [{ role: 'system', content: systemInstruction }, ...context, { role: 'user', content: `Trusted hotel facts:\n${trustedFacts}\n\nGuest question:\n${question}` }], temperature: 0.25, max_tokens: 280 });
+      body = JSON.stringify({ model: config.aiModel, messages: [{ role: 'system', content: systemInstruction }, ...context, { role: 'user', content: `Trusted hotel facts:\n${trustedFacts}\n\nGuest question:\n${question}` }], temperature: 0.25, max_tokens: 1500 });
     }
     const response = await fetch(url, { method: 'POST', headers, signal: controller.signal, body });
     if (!response.ok) { const providerBody = await response.text().catch(() => ''); console.error(JSON.stringify({ service: config.aiProvider, status: response.status, response: providerBody.slice(0, 300) })); throw new Error(`AI provider ${response.status}`); }
