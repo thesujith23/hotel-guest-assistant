@@ -12,7 +12,7 @@ Guests often need quick answers before booking or arriving, while hotel teams re
 
 - **React + Vite:** responsive chat and availability UI.
 - **Express + Node.js:** API boundary, validation, security middleware, intent routing, AI orchestration, and deterministic business logic.
-- **MongoDB + Mongoose:** seeded hotel facts, room types, and inventory. If MongoDB is unavailable, the same seeded demo data is used in memory so the assignment remains runnable.
+- **JSON knowledge base:** hotel facts, room types, and mock inventory are stored as server-owned JavaScript data, which is explicitly allowed by the assignment and keeps local setup simple.
 - **Optional server-side LLM:** receives only relevant trusted facts and bounded history. The browser never sees the provider key.
 
 See [ARCHITECTURE.md](./ARCHITECTURE.md) for the data-flow diagram.
@@ -23,16 +23,15 @@ See [PRODUCT_THINKING.md](./PRODUCT_THINKING.md) for the customer problem, guest
 
 ## Run locally
 
-Requirements: Node.js 18+, npm, and optionally MongoDB 6+.
+Requirements: Node.js 18+ and npm.
 
 ```bash
 cp .env.example .env
 npm install
-npm run seed                 # seeds MongoDB when MONGODB_URI is configured
 npm run dev                  # API: http://localhost:4000, UI: http://localhost:5173
 ```
 
-The app works without MongoDB or an AI key using deterministic demo fallback data. To enable the fast AI path, create a Gemini API key at [Google AI Studio](https://aistudio.google.com/api-keys), put it in `GEMINI_API_KEY`, set `AI_PROVIDER=gemini`, and keep `AI_MODEL=gemini-2.5-flash`. Gemini is called only by the server. OpenRouter remains supported by setting `AI_PROVIDER=openrouter`, `OPENROUTER_API_KEY`, and `AI_MODEL=openrouter/free`. The app falls back safely if the provider is unavailable. To use MongoDB, start a local instance and set `MONGODB_URI` in `.env` before running `npm run seed`.
+The app works without an AI key using deterministic JSON-backed hotel data. To enable the fast AI path, create a Gemini API key at [Google AI Studio](https://aistudio.google.com/api-keys), put it in `GEMINI_API_KEY`, set `AI_PROVIDER=gemini`, and keep `AI_MODEL=gemini-2.5-flash`. Gemini is called only by the server. OpenRouter remains supported by setting `AI_PROVIDER=openrouter`, `OPENROUTER_API_KEY`, and `AI_MODEL=openrouter/free`. The app falls back safely if the provider is unavailable.
 
 Useful commands:
 
@@ -79,7 +78,7 @@ curl -X POST http://localhost:4000/api/availability \
 | Capability | Implementation | Reason |
 |---|---|---|
 | Natural-language FAQ phrasing | Optional server-side LLM | Helps understand varied questions and write natural responses |
-| Hotel facts | MongoDB retrieval | Facts must be authoritative and inspectable |
+| Hotel facts | Server-owned JSON knowledge base | Facts must be authoritative and inspectable |
 | Dates and guest count | Zod + deterministic validation | Models should not decide whether dates are valid |
 | Room capacity matching | Deterministic service | Repeatable business rule |
 | Availability | Mock inventory service | Never hallucinate inventory or promise a room |
@@ -96,7 +95,7 @@ Implemented for this assignment:
 - Helmet security headers and strict configurable CORS.
 - Request body size limit, question/history limits, and Zod validation.
 - Rate limiting on chat and availability routes.
-- Mongoose models use controlled query shapes rather than user-provided MongoDB operators.
+- Hotel facts and inventory are not writable from the browser; the server owns the JSON dataset.
 - Request IDs and safe public error responses; raw stack traces and provider errors are not exposed.
 - Provider timeout and graceful fallback.
 - Availability is read-only and deterministic.
@@ -122,7 +121,7 @@ Manual scenarios to demonstrate in an interview:
 
 ## Interview explanation
 
-**Why MERN?** It keeps the guest-facing product and API in one JavaScript ecosystem, while MongoDB suits document-shaped facts and room content. It also leaves a clear path to an admin content workflow.
+**Why this stack?** React, Express, and Node keep the guest-facing product and API in one JavaScript ecosystem. A server-owned JSON knowledge base is sufficient for this assignment, which explicitly allows JSON or a database, and makes the evaluator setup frictionless. A production version could later replace the JSON adapter with a PMS or database repository.
 
 **Why is availability not AI-generated?** A model can interpret intent, but inventory is a business-critical fact. Deterministic validation and lookup are testable, explainable, and safe.
 

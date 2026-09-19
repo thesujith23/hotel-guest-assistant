@@ -6,8 +6,8 @@ flowchart LR
   React -->|POST /api/chat| Express[Express API]
   React -->|POST /api/availability| Express
   Express --> Router[Intent router]
-  Router --> Facts[MongoDB hotelFacts]
-  Router --> Rooms[MongoDB rooms + inventory]
+  Router --> Facts[JSON hotel knowledge base]
+  Router --> Rooms[JSON rooms + mock inventory]
   Router --> Availability[Deterministic availability service]
   Router --> AI[Optional server-side AI adapter]
   AI -->|grounded facts only| Provider[LLM provider]

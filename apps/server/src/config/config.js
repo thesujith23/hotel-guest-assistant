@@ -5,7 +5,6 @@ const projectRootEnv = path.resolve(path.dirname(fileURLToPath(import.meta.url))
 dotenv.config({ path: projectRootEnv });
 export const config = {
   port: Number(process.env.PORT || 4000),
-  mongoUri: process.env.MONGODB_URI || '',
   clientOrigin: process.env.CLIENT_ORIGIN || 'http://localhost:5173',
   aiProvider: process.env.AI_PROVIDER || (process.env.GEMINI_API_KEY ? 'gemini' : 'openrouter'),
   aiApiKey: process.env.GEMINI_API_KEY || process.env.OPENROUTER_API_KEY || process.env.AI_API_KEY || '',

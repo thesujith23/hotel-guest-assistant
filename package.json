@@ -5,8 +5,7 @@
   "scripts": {
     "dev": "concurrently \"npm run dev -w apps/server\" \"npm run dev -w apps/client\"",
     "test": "npm test -w apps/server && npm test -w apps/client",
-    "build": "npm run build -w apps/client",
-    "seed": "npm run seed -w apps/server"
+    "build": "npm run build -w apps/client"
   },
   "devDependencies": {"concurrently": "^9.0.1"}
 }

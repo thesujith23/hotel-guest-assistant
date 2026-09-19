@@ -46,7 +46,7 @@ Validation happens at the Express boundary with Zod before business logic or dat
 - dates: strict `YYYY-MM-DD` shape plus a semantic check that checkout follows check-in;
 - JSON body: maximum 20 KB.
 
-The API does not accept arbitrary MongoDB filters from the browser. Database queries are constructed from server-owned fields, which reduces MongoDB operator-injection risk. Mongoose schemas add another validation boundary.
+The API does not accept arbitrary data filters or knowledge-base writes from the browser. Hotel facts and mock inventory are server-owned JSON data, and user input is limited to validated chat and availability fields.
 
 There is no HTML rendering of assistant content in React; content is rendered as text, so the frontend does not use `dangerouslySetInnerHTML`. This avoids an HTML/script injection path. If rich markdown is added later, sanitize it with a strict allowlist before rendering.
 
@@ -82,4 +82,4 @@ Each request receives a UUID request ID, returned in `X-Request-ID` and structur
 
 ## Remaining production work
 
-Before a real hotel launch, add authentication where user-specific actions exist, centralized secrets management and rotation, TLS termination, a WAF/API gateway, distributed rate limiting, audit logs, dependency scanning, SAST/DAST, MongoDB least-privilege credentials, backups, monitoring/alerting, a real PMS integration, and a formal privacy/data-retention policy.
+Before a real hotel launch, add authentication where user-specific actions exist, centralized secrets management and rotation, TLS termination, a WAF/API gateway, distributed rate limiting, audit logs, dependency scanning, SAST/DAST, backups, monitoring/alerting, a real PMS or database integration, and a formal privacy/data-retention policy.
