@@ -1,0 +1,11 @@
+services:
+  - type: web
+    name: hotel-assistant-api
+    env: node
+    buildCommand: npm install
+    startCommand: npm start -w apps/server
+    envVars:
+      - key: CLIENT_ORIGIN
+        value: "https://your-frontend.vercel.app" # You will update this later in the Render Dashboard
+      - key: GEMINI_API_KEY
+        sync: false
